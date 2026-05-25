@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect config files
+<Files "database.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
