@@ -17,6 +17,12 @@ class ProductController {
     }
 
     public function add() {
+        if(
+            !isset($_SESSION['user']) ||
+            $_SESSION['user']['role']!='admin'
+        ){
+            die("Bạn không có quyền truy cập");
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $category_id = $_POST['category_id'];
             $name = $_POST['name'];
@@ -36,6 +42,12 @@ class ProductController {
 
     // ... các hàm edit, delete, detail cũng sửa tương tự ...
     public function edit() {
+        if(
+            !isset($_SESSION['user']) ||
+            $_SESSION['user']['role']!='admin'
+        ){
+            die("Bạn không có quyền truy cập");
+        }
         $id = $_GET['id'];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $category_id = $_POST['category_id'];
@@ -59,6 +71,12 @@ class ProductController {
     }
 
     public function delete() {
+        if(
+            !isset($_SESSION['user']) ||
+            $_SESSION['user']['role']!='admin'
+        ){
+            die("Bạn không có quyền truy cập");
+        }
         $id = $_GET['id'];
         $this->productModel->delete($id);
         header('Location: index.php?controller=product&action=list');
@@ -73,21 +91,39 @@ class ProductController {
         return $image;
     }
 
-    public function detail() {
-        $id = $_GET['id'];
-        $product = $this->productModel->getById($id);
-        include APP_PATH . '/views/product/detail.php'; // ✅ Sửa ở đây
-    }
+    public function detail()
+{
+    $id = $_GET['id'];
 
-    public function addToCart() {
-        $id = $_POST['product_id'];
-        if (isset($_SESSION['cart'][$id])) {
-            $_SESSION['cart'][$id]++;
-        } else {
-            $_SESSION['cart'][$id] = 1;
-        }
-        header('Location: index.php?controller=cart&action=index');
+    $product = $this->productModel->getById($id);
+
+    include APP_PATH . '/views/product/detail.php';
+}
+
+public function addToCart()
+{
+    if(!isset($_SESSION['user']))
+    {
+        echo "<script>
+                alert('Vui lòng đăng nhập trước khi thêm vào giỏ hàng');
+                window.location='index.php?controller=user&action=login';
+              </script>";
         exit();
     }
+
+    $id = $_POST['product_id'];
+
+    if(isset($_SESSION['cart'][$id]))
+    {
+        $_SESSION['cart'][$id]++;
+    }
+    else
+    {
+        $_SESSION['cart'][$id] = 1;
+    }
+
+    header("Location: index.php?controller=cart&action=index");
+    exit();
+}
 }
 ?>

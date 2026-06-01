@@ -1,6 +1,8 @@
 <?php
 // Router chính
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Define base path để include file cho đúng
 define('BASE_PATH', __DIR__);
@@ -12,12 +14,14 @@ require_once APP_PATH . '/config/database.php';
 // Include models
 require_once APP_PATH . '/models/CategoryModel.php';
 require_once APP_PATH . '/models/ProductModel.php';
+require_once APP_PATH . '/models/UserModel.php';
 
 // Include controllers
 require_once APP_PATH . '/controllers/DefaultController.php';
 require_once APP_PATH . '/controllers/CategoryController.php';
 require_once APP_PATH . '/controllers/ProductController.php';
 require_once APP_PATH . '/controllers/CartController.php'; // Thêm controller giỏ hàng
+require_once APP_PATH . '/controllers/UserController.php';
 
 // Get database connection
 try {
@@ -76,6 +80,9 @@ switch($controller) {
             case 'addToCart':
                 $productController->addToCart();
                 break;
+            case 'detail':
+                    $productController->detail();
+                    break;
             default:
                 $productController->list();
                 break;
@@ -107,6 +114,32 @@ switch($controller) {
                 break;
         }
         break;
+
+        case 'user':
+
+        
+            $userController = new UserController();
+        
+            switch($action){
+        
+                case 'login':
+                    $userController->login();
+                    break;
+        
+                case 'register':
+                    $userController->register();
+                    break;
+        
+                case 'logout':
+                    $userController->logout();
+                    break;
+        
+                default:
+                    $userController->login();
+                    break;
+            }
+        
+            break;
 
     // --- DEFAULT CONTROLLER (TRANG CHỦ) ---
     default:
