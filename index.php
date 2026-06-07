@@ -115,9 +115,7 @@ switch($controller) {
         }
         break;
 
-        case 'user':
-
-        
+        case 'user':            
             $userController = new UserController();
         
             switch($action){
@@ -133,7 +131,15 @@ switch($controller) {
                 case 'logout':
                     $userController->logout();
                     break;
-        
+                    
+                case 'forgotPassword':
+                    $userController->forgotPassword();
+                    break;
+
+                case 'resetPassword':
+                    $userController->resetPassword();
+                    break;
+
                 default:
                     $userController->login();
                     break;

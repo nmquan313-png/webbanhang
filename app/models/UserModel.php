@@ -37,4 +37,34 @@ class UserModel {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function saveResetToken($email,$token){
+    $sql = "UPDATE users
+            SET reset_token=?
+            WHERE email=?";
+
+    $stmt = $this->conn->prepare($sql);
+
+    return $stmt->execute([
+        $token,
+        $email
+    ]);
+    }
+    
+    public function updatePasswordByToken(
+    $token,
+    $password
+){
+    $sql = "UPDATE users
+            SET password=?,
+                reset_token=NULL
+            WHERE reset_token=?";
+
+    $stmt = $this->conn->prepare($sql);
+
+    return $stmt->execute([
+        $password,
+        $token
+    ]);
+    }
 }

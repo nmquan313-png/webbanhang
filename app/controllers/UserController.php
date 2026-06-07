@@ -65,4 +65,48 @@ class UserController {
         header("Location: index.php");
         exit;
     }
+
+    public function forgotPassword(){
+    if($_SERVER['REQUEST_METHOD']=='POST')
+    {
+        $email = $_POST['email'];
+
+        $token = md5(time());
+
+        $model = new UserModel();
+
+        $model->saveResetToken($email,$token);
+
+        echo "Link đặt lại mật khẩu:<br>";
+        echo "<a href='index.php?controller=user&action=resetPassword&token=$token'>
+                Đặt lại mật khẩu
+              </a>";
+    }
+
+    include "app/views/user/forgot_password.php";
+    }
+
+    public function resetPassword(){
+    $token = $_GET['token'];
+
+    if($_SERVER['REQUEST_METHOD']=='POST')
+    {
+        $password = password_hash(
+            $_POST['password'],
+            PASSWORD_DEFAULT
+        );
+
+        $model = new UserModel();
+
+        $model->updatePasswordByToken(
+            $token,
+            $password
+        );
+
+        echo "Đổi mật khẩu thành công";
+        exit;
+    }
+
+    include "app/views/user/reset_password.php";
+    }
 }
