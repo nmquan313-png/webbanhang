@@ -107,12 +107,25 @@
                             <?= $_SESSION['user']['fullname']; ?>
                         </span>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="index.php?controller=user&action=profile">
+                                 Hồ sơ
+                         </a>
+                    </li>
 
                     <?php if(
                         isset($_SESSION['user']['role'])
                         &&
                         $_SESSION['user']['role']=='admin'
                     ): ?>
+
+                    <li class="nav-item">
+                            <a class="nav-link"
+                                href="index.php?controller=user&action=list">
+                                Quản lý User
+                            </a>
+                    </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
@@ -151,7 +164,7 @@
                 <li class="nav-item">
 
                     <a class="nav-link cart-icon"
-                       href="cart.php">
+                    href="index.php?controller=cart&action=index">
 
                         <i class="fas fa-shopping-cart"></i>
                         Giỏ hàng

@@ -103,10 +103,111 @@ class UserController {
             $password
         );
 
-        echo "Đổi mật khẩu thành công";
-        exit;
+        $_SESSION['success'] = "Đổi mật khẩu thành công!";
+        header("Location: index.php?controller=user&action=login");
+        exit;;
     }
 
     include "app/views/user/reset_password.php";
+    }
+
+    public function profile(){
+    include APP_PATH."/views/user/profile.php";
+    }
+
+    public function uploadAvatar(){
+    $file = time().'_'.$_FILES['avatar']['name'];
+
+    move_uploaded_file(
+        $_FILES['avatar']['tmp_name'],
+        'public/avatar/'.$file
+    );
+
+    $model = new UserModel();
+
+    $model->updateAvatar(
+        $_SESSION['user']['id'],
+        $file
+    );
+
+    $_SESSION['user']['avatar'] = $file;
+
+    header("Location: index.php?controller=user&action=profile");
+    exit;
+    }
+
+    public function changePassword(){
+    if($_SERVER['REQUEST_METHOD']=="POST")
+    {
+        $model = new UserModel();
+
+        $user = $model->login($_SESSION['user']['email']);
+
+        if(
+            !password_verify(
+                $_POST['old_password'],
+                $user['password']
+            )
+        ){
+            echo "<script>
+                    alert('Mật khẩu cũ không đúng');
+                    history.back();
+                  </script>";
+            exit;
+        }
+
+        if(
+            $_POST['new_password']
+            !=
+            $_POST['confirm_password']
+        ){
+            echo "<script>
+                    alert('Mật khẩu xác nhận không khớp');
+                    history.back();
+                  </script>";
+            exit;
+        }
+
+        $hash = password_hash(
+            $_POST['new_password'],
+            PASSWORD_DEFAULT
+        );
+
+        $model->updatePassword(
+            $_SESSION['user']['id'],
+            $hash
+        );
+
+        echo "<script>
+                alert('Đổi mật khẩu thành công');
+                window.location='index.php?controller=user&action=profile';
+              </script>";
+        exit;
+    }
+    }
+
+    public function list()
+    {
+        $model = new UserModel();
+    
+        $users = $model->getAllUsers();
+    
+        include APP_PATH.'/views/user/list.php';
+    }
+
+    public function lock(){
+    if($_GET['id'] == $_SESSION['user']['id'])
+    {
+        die("Không thể khóa chính tài khoản đang đăng nhập");
+    }
+
+    $this->userModel->lockUser($_GET['id']);
+
+    header("Location:index.php?controller=user&action=list");
+    }
+
+    public function unlock(){
+    $this->userModel->unlockUser($_GET['id']);
+    header("Location:index.php?controller=user&action=list");
     }
 }

@@ -61,29 +61,7 @@ if (isset($_GET['clear'])) {
 // Tính tổng tiền
 $total = 0;
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giỏ hàng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="index.php">
-            <i class="fas fa-mobile-alt"></i> ĐIỆN TỬ STORE
-        </a>
-        <a href="cart.php" class="btn btn-outline-light">
-            <i class="fas fa-shopping-cart"></i> Giỏ hàng
-            <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])): ?>
-                <span class="badge bg-danger"><?php echo count($_SESSION['cart']); ?></span>
-            <?php endif; ?>
-        </a>
-    </div>
-</nav>
+<?php include 'app/views/shares/header.php'; ?>
 
 <div class="container mt-5">
     <h2 class="mb-4"><i class="fas fa-shopping-cart"></i> Giỏ hàng của bạn</h2>
@@ -196,12 +174,4 @@ $total = 0;
     <?php endif; ?>
 </div>
 
-<footer class="bg-dark text-white text-center py-4 mt-5">
-    <div class="container">
-        <p>&copy; 2026 Điện Tử Store. All rights reserved.</p>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php include 'app/views/shares/footer.php'; ?>

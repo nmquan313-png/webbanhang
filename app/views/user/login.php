@@ -81,6 +81,12 @@ body{
                 </a>
             </p>
 
+            <p class="text-center">
+                <a href="index.php?controller=user&action=forgotPassword">
+                    Quên mật khẩu?
+                </a>
+            </p>
+
         </div>
 
     </div>

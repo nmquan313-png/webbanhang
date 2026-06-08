@@ -140,11 +140,30 @@ switch($controller) {
                     $userController->resetPassword();
                     break;
 
+                case 'uploadAvatar':
+                    $userController->uploadAvatar();
+                    break;
+
+                case 'profile':
+                    $userController->profile();
+                    break;
+
                 default:
                     $userController->login();
                     break;
+
+                case 'list':
+                    $userController->list();
+                    break;
+                    
+                case 'lock':
+                    $userController->lock();
+                    break;
+                    
+                case 'unlock':
+                    $userController->unlock();
+                    break;
             }
-        
             break;
 
     // --- DEFAULT CONTROLLER (TRANG CHỦ) ---

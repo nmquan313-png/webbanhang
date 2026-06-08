@@ -6,7 +6,7 @@
 
 $total = 0;
 ?>
-
+<?php include APP_PATH.'/views/shares/header.php'; ?>
 <div class="container mt-5">
     <h2 class="mb-4">GIỎ HÀNG</h2>
 
@@ -60,3 +60,4 @@ $total = 0;
         <div class="alert alert-info">Giỏ hàng đang trống!</div>
     <?php endif; ?>
 </div>
+<?php include APP_PATH.'/views/shares/footer.php'; ?>

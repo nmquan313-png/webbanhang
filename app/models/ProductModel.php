@@ -48,10 +48,17 @@ class ProductModel {
         return $stmt->execute([$category_id, $name, $description, $price, $image, $quantity, $id]);
     }
 
-    public function delete($id) {
-        $query = "DELETE FROM " . $this->table . " WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        return $stmt->execute([$id]);
+    public function delete($id){
+    $stmt = $this->conn->prepare(
+        "DELETE FROM order_details WHERE product_id = ?"
+    );
+    $stmt->execute([$id]);
+
+    $stmt = $this->conn->prepare(
+        "DELETE FROM products WHERE id = ?"
+    );
+
+    return $stmt->execute([$id]);
     }
 
     public function getProductsByCategory($category_id) {

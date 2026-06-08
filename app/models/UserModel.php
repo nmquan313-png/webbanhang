@@ -67,4 +67,53 @@ class UserModel {
         $token
     ]);
     }
+
+    public function updateAvatar($id,$avatar){
+    $sql =
+    "UPDATE users
+    SET avatar=?
+    WHERE id=?";
+
+    $stmt =
+    $this->conn->prepare($sql);
+
+    return $stmt->execute([
+        $avatar,
+        $id
+    ]);
+    }
+
+    public function lockUser($id)
+{
+    $sql =
+    "UPDATE users
+    SET status=0
+    WHERE id=?";
+
+    $stmt =
+    $this->conn->prepare($sql);
+
+    return $stmt->execute([$id]);
+}
+
+    public function updatePassword($id,$password){
+    $sql = "UPDATE users
+            SET password=?
+            WHERE id=?";
+
+    $stmt = $this->conn->prepare($sql);
+
+    return $stmt->execute([
+        $password,
+        $id
+    ]);
+    }
+
+    public function getAllUsers(){
+    $sql = "SELECT * FROM users";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute();
+
+    return $stmt;
+    }
 }

@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <button type="submit" class="btn btn-success btn-lg">
                                 <i class="fas fa-check-circle"></i> Xác nhận đặt hàng
                             </button>
-                            <a href="cart.php" class="btn btn-secondary">
+                            <a href="index.php?controller=cart&action=index" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> Quay lại giỏ hàng
                             </a>
                         </div>
