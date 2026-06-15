@@ -68,6 +68,32 @@ class ProductModel {
         $stmt->execute();
         return $stmt;
     }
+
+    public function getByCategory($category_id){
+    $stmt = $this->conn->prepare(
+        "SELECT *
+         FROM products
+         WHERE category_id=?"
+    );
+
+    $stmt->execute([$category_id]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function sortByPrice($order='ASC'){
+    $stmt = $this->conn->prepare(
+        "SELECT *
+         FROM products
+         ORDER BY price $order"
+    );
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 } // <-- Đóng class ProductModel
 
 } // <-- ĐÂY LÀ DÒNG QUAN TRỌNG: Đóng lệnh if (!class_exists)

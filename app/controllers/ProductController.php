@@ -11,9 +11,7 @@ class ProductController {
     }
 
     public function list() {
-        $products = $this->productModel->getAll();
-        // ✅ Sửa đường dẫn: dùng APP_PATH
-        include APP_PATH . '/views/product/list.php';
+        include APP_PATH.'/views/product/list.php';
     }
 
     public function add() {
@@ -22,19 +20,6 @@ class ProductController {
             $_SESSION['user']['role']!='admin'
         ){
             die("Bạn không có quyền truy cập");
-        }
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $category_id = $_POST['category_id'];
-            $name = $_POST['name'];
-            $description = $_POST['description'];
-            $price = $_POST['price'];
-            $quantity = $_POST['quantity'];
-            $image = $this->uploadImage();
-            
-            if ($this->productModel->create($category_id, $name, $description, $price, $image, $quantity)) {
-                header('Location: index.php?controller=product&action=list');
-                exit();
-            }
         }
         $categories = $this->categoryModel->getAll();
         include APP_PATH . '/views/product/add.php'; // ✅ Sửa ở đây
@@ -49,22 +34,6 @@ class ProductController {
             die("Bạn không có quyền truy cập");
         }
         $id = $_GET['id'];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $category_id = $_POST['category_id'];
-            $name = $_POST['name'];
-            $description = $_POST['description'];
-            $price = $_POST['price'];
-            $quantity = $_POST['quantity'];
-            $product = $this->productModel->getById($id);
-            $image = $product['image'];
-            if (!empty($_FILES['image']['name'])) {
-                $image = $this->uploadImage();
-            }
-            if ($this->productModel->update($id, $category_id, $name, $description, $price, $image, $quantity)) {
-                header('Location: index.php?controller=product&action=list');
-                exit();
-            }
-        }
         $product = $this->productModel->getById($id);
         $categories = $this->categoryModel->getAll();
         include APP_PATH . '/views/product/edit.php'; // ✅ Sửa ở đây
@@ -91,17 +60,12 @@ class ProductController {
         return $image;
     }
 
-    public function detail()
-{
-    $id = $_GET['id'];
+    public function detail(){
 
-    $product = $this->productModel->getById($id);
-
-    include APP_PATH . '/views/product/detail.php';
+    include APP_PATH.'/views/product/detail.php';
 }
 
-public function addToCart()
-{
+public function addToCart(){
     if(!isset($_SESSION['user']))
     {
         echo "<script>
@@ -125,5 +89,23 @@ public function addToCart()
     header("Location: index.php?controller=cart&action=index");
     exit();
 }
+
+public function searchByName($keyword)
+{
+    $stmt = $this->conn->prepare(
+        "SELECT p.*, c.name as category_name
+         FROM products p
+         LEFT JOIN categories c ON p.category_id = c.id
+         WHERE p.name LIKE ?"
+    );
+
+    $keyword = "%".$keyword."%";
+
+    $stmt->execute([$keyword]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 }
 ?>

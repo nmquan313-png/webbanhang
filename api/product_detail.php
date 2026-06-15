@@ -3,6 +3,8 @@
 require_once '../app/config/database.php';
 require_once '../app/models/ProductModel.php';
 
+header('Content-Type: application/json');
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -12,19 +14,15 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 $product = $productModel->getById($id);
 
-header('Content-Type: application/json');
-
-if (!$product) {
-
+if(!$product){
     echo json_encode([
-        "success" => false,
-        "message" => "Không tìm thấy sản phẩm"
+        "success"=>false,
+        "message"=>"Không tìm thấy sản phẩm"
     ]);
-
     exit();
 }
 
 echo json_encode([
-    "success" => true,
-    "data" => $product
+    "success"=>true,
+    "data"=>$product
 ]);

@@ -7,8 +7,11 @@ $db = (new Database())->getConnection();
 
 $model = new CategoryModel($db);
 
-$data = $model->getAll()->fetchAll(PDO::FETCH_ASSOC);
+$id = $_GET['id'] ?? 0;
 
-header('Content-Type: application/json');
+$data = $model->getById($id);
 
-echo json_encode($data);
+echo json_encode([
+    "success"=>true,
+    "data"=>$data
+]);
